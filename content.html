@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>书籍搜索-详情</title>
+	<link rel="stylesheet" type="text/css" href="0.css"/>
+	<link rel="stylesheet" type="text/css" href="count.css"/>
+	<style>
+		#content {
+			width: 700px;
+			margin:0px auto ;
+		}
+		.btn {
+			    width: 320px;
+			    height: 40px;
+			    position: absolute;
+			    top: 331px;
+			    right: 0%;
+		}
+		
+			
+	</style>
+	
+</head>
+
+<body>
+	<div class="top">
+			<div class="bd">
+				<div class="top-nav-info"><a class="nav-login" href="javascript:;">登录/注册</a></div>
+				<div class="top-nav-doubanapp">
+					<a class="lnk-doubanapp" href="javascript:;">下载豆瓣客户端</a>
+					<div id="doubanapp-tip"> 
+						<a href="javascript:;"><img src="img/1.png"/><span>豆瓣</span></a>
+						<a href="javascript:;"><img src="img/下载.png"/><span>iPhone · Android</span></a>
+					</div>
+				</div>
+				<div class="global-nav-items">
+					<ul  >
+						<li><a href="javascript:;">豆瓣</a></li>
+						<li><a href="javascript:;">读书 </a></li>
+						<li><a href="javascript:;">电影 </a></li>
+						<li><a href="javascript:;">音乐</a></li>
+						<li><a href="javascript:;">同城</a></li>
+						<li><a href="javascript:;">小组</a></li>
+						<li><a href="javascript:;">阅读</a></li>
+						<li><a href="javascript:;">FM</a></li>
+						<li><a href="javascript:;">时间</a></li>
+						<li><a href="javascript:;">豆品</a></li>
+						<li><a href="javascript:;">更多</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div id="db-nav-movie" class="nav">
+			<div class="nav-wrap">
+				<div class="nav-primary">
+					<div class="nav-logo"></div>
+					<div class="nav-search">
+						<form action="" method="get">
+							<div class="inp">
+								<input id="inp-query" maxlength="60" placeholder="搜索电影、电视剧、综艺、影人"  >
+							</div>
+							<div class="inp-btn">
+								<input type="button" id="submit" value="搜索">
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="nav-secondary" >
+				<div class="nav-items">
+					<ul>
+						<li><a href="javascript:;">影讯&购票</a></li>
+						<li><a href="javascript:;">选电影</a></li>
+						<li><a href="javascript:;">电视剧</a></li>
+						<li><a href="javascript:;">排行榜</a></li>
+						<li><a href="javascript:;">分类</a></li>
+						<li><a href="javascript:;">影评</a></li>
+						<li><a href="javascript:;">2018年度榜单 </a></li>
+						<li><a href="javascript:;">2018书影音报告</a></li>
+					</ul>
+				</div>
+				<a href="javascript:;" class="movieannual2018"></a>
+			</div>
+			
+		</div>
+	<div class="btn">
+		<a href="javascript:;" style="background: black;">返回上一页</a>
+		<a href="javascript:;" style="background: black;">返回首页</a>
+	</div>
+	<div id="content">
+		
+		
+	</div>
+
+</body>
+
+</html>
+<script src="js/jquery-1.11.3.js"></script>
+	<script>
+		var search=location.search;
+		var id=search.substring(4);
+		console.log(id)
+        $(function(){
+			$.ajax({
+				url:'https://api.douban.com/v2/movie/subject/'+id,
+				dataType:'jsonp',
+				// jsonp:'callback',
+				success:function(data){
+					console.log(data)
+					if (data.directors[0]==undefined) {
+						data.directors[0]={name:' '}
+						}
+					if (data.casts[0]==undefined) {
+						data.casts[0]={name:' '}
+					}
+						var div=$(`<h2>${data.title}</h2>
+							<img src="${data.images.medium}" />
+							<p>导演：<span>${data.directors[0].name}</span></P>
+							<p>主演:<span> ${data.casts[0].name} </span></P>
+							<p>类型：<span> ${data.genres[0]}</span></P>
+	   						<p>国家：<span>${data.countries}</span></P>
+	   						<p>简介：<span>${data.summary}</span></P>`)
+						$('#content').append(div)
+				}
+			})
+			$('.btn a').eq(0).click(function(){
+				window.history.back(-1);
+			})
+			$('.btn a').eq(1).click(function(){
+				window.location='new_file.html';
+			})
+
+		})
+	</script>
